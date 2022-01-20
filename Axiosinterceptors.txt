@@ -1,0 +1,102 @@
+// How To Make Axios Interceptors
+
+-> install Axios package
+
+// Why We Need To Use Axios Interceptors
+
+-> bacause in our whole application for making http request and response then we cn use..
+
+// Benefits of Axios Interceptors
+
+-> (1) Reusable Code
+-> (2) we dont want to specified base url
+-> (3) we can see each and every request and response in our application
+-> (4) its helps  a lot of
+
+
+// How To Make Axios Interceptors
+
+(1) create a axiosInterceptor.js File 
+
+(2) import axios 
+
+(3) import base url from config folder
+
+(4) create const variable 
+
+example :- const axiosAuth = axios.create({
+    baseurl : <baseURL>
+    timeout : 10000
+})
+
+Now You Can use axiosAuth.Interceptors.request.use() Or 
+Now You Can use axiosAuth.Interceptors.response.use() Or 
+
+
+Example : -
+
+import axios from "axios";
+import { API_BASE_URL } from "../config/appconfig";
+import { toast } from "react-toastify";
+
+const axiosAuth = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 10000,
+});
+
+// Request Interceptors
+axiosAuth.interceptors.request.use(
+  (request) => {
+    return request;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
+// Reponse Interceptors
+
+axiosAuth.interceptors.response.use(
+  (response) => {
+    return response.data;
+  },
+  function (error) {
+    if (error.response.status === 404) {
+      toast.error("Page Not Found");
+    } else if (error.response.status === 500) {
+      toast.error("Internal Server Error");
+    } else if (error.response.status === 201) {
+      toast.success("User Created");
+    } else if (error.response.status === 400) {
+      toast.error("Invalid Credentials");
+    } else {
+      toast.error("Internal Server Error");
+    }
+    // toast.error(error);
+    return Promise.reject(error);
+  }
+);
+
+export default axiosAuth;
+
+
+// Now with The help of axiosAuth you can use evry page that you want
+
+// How To use Axios Interceptors
+
+
+const addNote = async (title, description, tag) => {
+    const response = () => {
+      return axiosAuth({
+        url: "/api/notes/addnote",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+        data: JSON.stringify({ title, description, tag }),
+      });
+    };
+    const note = await response();
+    setNotes(notes.concat(note));
+  };

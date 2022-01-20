@@ -1,0 +1,25 @@
+// Why we need Private Routes
+
+-> bacause if we want to protect some page of our website were loged in user can access then we are used
+
+
+// Example
+
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+
+const PrivateRoute = () => {
+  const auth = localStorage.getItem("token");
+  return auth ? <Outlet /> : <Navigate to="/login" />;
+};
+
+export default PrivateRoute;
+
+
+// How To use 
+
+{/* All Private Routes Will Be Here */}
+        <Route exact path="/" element={<PrivateRoute />}>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/about" element={<About />} />
+        </Route>
