@@ -1,0 +1,37 @@
+REACT HOOOK FORM - LIBRARY
+
+(1) YOU NEED TO INSTALL REACT-HOOK-LIBRARY BY USING -> npm install react-hook-form
+
+(2) import { useForm, SubmitHandler } from "react-hook-form";
+
+(3) DEFINE TYPES OF EACH FIELD ->
+
+EXAMPLE :- 
+
+interface PropsTypes {
+  title: string;
+  body: string;
+}
+
+(4) INSIDE COMPONENT TYPE => 
+
+const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PropsTypes>();
+
+(5) DEFINE SUBMIT FUNCTION TO SUBMIT DATA
+
+-> const onSubmit: SubmitHandler<PropsTypes> = (data) => {
+    dispatch(addPost({ title: data.title, body: data.body }));
+    navigate("/");
+  };
+
+(6) NOW IMPLETE IT EACH AND EVERY FIELD USING THIS
+
+(INSIDE INPUT TYPE) YOU HAVE TO PASS THIS
+
+=> {...register("title", { required: "Title is required." })}
+                  error={Boolean(errors.title)}
+                  helperText={errors.title?.message}
